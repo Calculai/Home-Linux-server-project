@@ -1,0 +1,13 @@
+[Unit]
+Description=Public Pi status page
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/pistatus/server.py
+DynamicUser=yes
+NoNewPrivileges=true
+ProtectHome=true
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
