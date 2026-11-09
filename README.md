@@ -1,13 +1,62 @@
-# Home-Linux-server-project
-Setting up my Raspberry Pi as my own home server linked to my domain Calculai.dev
+# Home Linux Server
 
-So far I have setup the domain and the tunnel so I can access my RPI from anywhere through ssh.calculai.dev and ensured safety via enforcing a policy of who can access based on email verification. I am tunniling via Cloudflare. 
+A Raspberry Pi home server for experimenting with self-hosted services and remote access. The server uses the `calculai.dev` domain and Cloudflare Tunnels.
 
-Decided that the web interface was annoying so added cloudflare tunnel to my laptop so I can ssh directly via: 
-ssh hostname
+## Overview
 
-Currently working on a status page that would be publically assecible. Ended up with writing my own. 
+SSH access is routed through Cloudflare and protected by an email-verification policy. A local SSH alias provides convenient access from my laptop via powershell:
 
-Can be accessed at status.Calculai.dev
+ssh alias
+
+The server also runs a custom status page, publicly available at [status.calculai.dev](https://status.calculai.dev).
+
+## Hardware and software
+
+- **Hardware:** Raspberry Pi 4 Model B Rev 1.5, 8 GB RAM
+- **Operating system:** Debian GNU/Linux 13 (trixie)
+- **Architecture:** 64-bit ARM (`aarch64`), 4 CPU cores
+- **Python:** 3.13.5
+- **Root filesystem:** 58 GB total 
+- **Domain:** `calculai.dev`
+- **Remote access:** Cloudflare Tunnel
+
+## Services
+
+| Service | Purpose | Access |
+|---|---|---|
+| Cloudflare Tunnel | Provides remote SSH access | `ssh.calculai.dev`, private |
+| PiStatus | Custom server status page | [status.calculai.dev](https://status.calculai.dev), public |
+
+## Repository layout
+
+```text
+.
+└── pistatus/
+    ├── server.py
+    └── pistatus.service
+```
+
+## Requirements
+
+- Raspberry Pi running Debian GNU/Linux 13 (trixie) on 64-bit ARM
+- A domain managed through Cloudflare
+- Cloudflare Tunnel configured for remote SSH access
+- Python 3 (the status page uses only the Python standard library)
+
+## Setup
+
+PiStatus runs as a systemd service. The repository includes the status-page application and a systemd unit file.
+
+## Configuration
+
+Cloudflare Tunnel and an email-verification policy provide remote SSH access.
+
+## Maintenance
+
+- **Check PiStatus:** `sudo systemctl status pistatus`
+- **View PiStatus logs:** `sudo journalctl -u pistatus`
+- **Restart PiStatus:** `sudo systemctl restart pistatus`
+
+PiStatus is enabled to start automatically and was running when last checked.
 
 
